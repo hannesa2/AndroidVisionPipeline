@@ -25,17 +25,17 @@ implementation 'com.github.hannesa2:AndroidVisionPipeline:latest_version'
 ## Usage
 You can add a camera preview with a graphic overlay (to draw stuff over the preview) in xml like this
 ```xml
-<online.devliving.mobilevisionpipeline.camera.CameraSourcePreview
+<info.hannes.visionpipeline.camera.CameraSourcePreview
         android:id="@+id/preview"
         android:layout_width="match_parent"
         android:layout_height="match_parent">
 
-        <online.devliving.mobilevisionpipeline.GraphicOverlay
+        <info.hannes.visionpipeline.GraphicOverlay
             android:id="@+id/faceOverlay"
             android:layout_width="match_parent"
             android:layout_height="match_parent" />
 
-</online.devliving.mobilevisionpipeline.camera.CameraSourcePreview>
+</info.hannes.visionpipeline.camera.CameraSourcePreview>
 ```
 There are 2 scale types for the preview defined as 
 ```java
