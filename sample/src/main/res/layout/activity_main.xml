@@ -8,16 +8,16 @@
     android:layout_height="match_parent"
     android:keepScreenOn="true">
 
-    <online.devliving.mobilevisionpipeline.camera.CameraSourcePreview
+    <info.hannes.visionpipeline.camera.CameraSourcePreview
         android:id="@+id/preview"
         android:layout_width="match_parent"
         android:layout_height="match_parent">
 
-        <online.devliving.mobilevisionpipeline.GraphicOverlay
+        <info.hannes.visionpipeline.GraphicOverlay
             android:id="@+id/faceOverlay"
             android:layout_width="match_parent"
             android:layout_height="match_parent" />
 
-    </online.devliving.mobilevisionpipeline.camera.CameraSourcePreview>
+    </info.hannes.visionpipeline.camera.CameraSourcePreview>
 
 </FrameLayout>

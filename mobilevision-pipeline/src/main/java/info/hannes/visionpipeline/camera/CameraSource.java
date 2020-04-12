@@ -1,4 +1,4 @@
-package online.devliving.mobilevisionpipeline.camera;
+package info.hannes.visionpipeline.camera;
 
 /*
  * Copyright (C) The Android Open Source Project
@@ -51,7 +51,7 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
-import online.devliving.mobilevisionpipeline.Util;
+import info.hannes.visionpipeline.Util;
 
 // Note: This requires Google Play Services 8.1 or higher, due to using indirect byte buffers for
 // storing images.
