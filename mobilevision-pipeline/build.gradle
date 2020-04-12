@@ -25,6 +25,7 @@ dependencies {
     compileOnly 'com.google.android.gms:play-services-basement:17.2.1'
     compileOnly 'com.google.android.gms:play-services-vision:20.0.0'
     testImplementation 'junit:junit:4.13'
+    api 'com.github.hannesa2:Logcat:1.7.0'
     implementation "androidx.core:core-ktx:1.2.0"
     implementation "org.jetbrains.kotlin:kotlin-stdlib-jdk7:$kotlin_version"
 }
