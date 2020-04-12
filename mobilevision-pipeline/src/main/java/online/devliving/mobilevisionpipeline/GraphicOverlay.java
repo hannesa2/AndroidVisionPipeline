@@ -44,6 +44,7 @@ import online.devliving.mobilevisionpipeline.camera.CameraSource;
  * </ol>
  */
 public class GraphicOverlay<T extends GraphicOverlay.Graphic> extends View {
+
     private final Object mLock = new Object();
     private int mPreviewWidth;
     private float mWidthScaleFactor = 1.0f;

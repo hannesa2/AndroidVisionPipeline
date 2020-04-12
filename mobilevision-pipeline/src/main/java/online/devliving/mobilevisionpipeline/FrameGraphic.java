@@ -6,9 +6,6 @@ import android.graphics.Paint;
 import android.graphics.RectF;
 import android.util.Log;
 
-/**
- * Created by Mehedi Hasan Khan <mehedi.mailing@gmail.com> on 12/27/16.
- */
 
 public abstract class FrameGraphic extends GraphicOverlay.Graphic implements Util.FrameSizeProvider {
     private Paint borderPaint = null;
