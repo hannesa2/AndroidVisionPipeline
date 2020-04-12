@@ -20,9 +20,6 @@ import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
 import java.io.IOException;
 
-/**
- * Created by Mehedi Hasan Khan <mehedi.mailing@gmail.com> on 8/10/17.
- */
 
 public class Util {
     public static boolean isPortraitMode(Context context) {
@@ -92,7 +89,7 @@ public class Util {
             // Choose the smallest ratio as inSampleSize value, this will guarantee
             // a final image with both dimensions larger than or equal to the
             // requested height and width.
-            inSampleSize = heightRatio < widthRatio ? heightRatio : widthRatio;
+            inSampleSize = Math.min(heightRatio, widthRatio);
         }
 
         return inSampleSize;
