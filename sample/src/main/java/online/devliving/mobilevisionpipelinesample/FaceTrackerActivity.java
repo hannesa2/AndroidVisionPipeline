@@ -24,9 +24,11 @@ import android.content.Context;
 import android.content.DialogInterface;
 import android.content.pm.PackageManager;
 import android.os.Bundle;
-import android.util.Log;
 import android.view.View;
 import android.widget.Toast;
+
+import androidx.appcompat.app.AppCompatActivity;
+import androidx.core.app.ActivityCompat;
 
 import com.google.android.gms.common.ConnectionResult;
 import com.google.android.gms.common.GoogleApiAvailability;
@@ -35,19 +37,16 @@ import com.google.android.gms.vision.Tracker;
 import com.google.android.gms.vision.face.Face;
 import com.google.android.gms.vision.face.FaceDetector;
 
-import androidx.appcompat.app.AppCompatActivity;
-import androidx.core.app.ActivityCompat;
 import online.devliving.mobilevisionpipeline.GraphicOverlay;
 import online.devliving.mobilevisionpipeline.camera.CameraSource;
 import online.devliving.mobilevisionpipeline.camera.CameraSourcePreview;
+import timber.log.Timber;
 
 /**
  * Activity for the face tracker app.  This app detects faces with the rear facing camera, and draws
  * overlay graphics to indicate the position, size, and ID of each face.
  */
 public final class FaceTrackerActivity extends AppCompatActivity {
-
-    private static final String TAG = "FaceTracker";
 
     private CameraSource mCameraSource = null;
 
@@ -76,7 +75,7 @@ public final class FaceTrackerActivity extends AppCompatActivity {
     }
 
     private void requestCameraPermission() {
-        Log.w(TAG, "Camera permission is not granted. Requesting permission");
+        Timber.w("Camera permission is not granted. Requesting permission");
 
         final String[] permissions = new String[]{Manifest.permission.CAMERA};
 
@@ -122,7 +121,7 @@ public final class FaceTrackerActivity extends AppCompatActivity {
             // isOperational() can be used to check if the required native library is currently
             // available.  The detector will automatically become operational once the library
             // download completes on device.
-            Log.w(TAG, "Face detector dependencies are not yet available.");
+            Timber.w("Face detector dependencies are not yet available.");
         }
 
         mCameraSource = new CameraSource.Builder(context, detector)
@@ -165,19 +164,19 @@ public final class FaceTrackerActivity extends AppCompatActivity {
     @Override
     public void onRequestPermissionsResult(int requestCode, String[] permissions, int[] grantResults) {
         if (requestCode != RC_HANDLE_CAMERA_PERM) {
-            Log.d(TAG, "Got unexpected permission result: " + requestCode);
+            Timber.d("Got unexpected permission result: %s", requestCode);
             super.onRequestPermissionsResult(requestCode, permissions, grantResults);
             return;
         }
 
         if (grantResults.length != 0 && grantResults[0] == PackageManager.PERMISSION_GRANTED) {
-            Log.d(TAG, "Camera permission granted - initialize the camera source");
+            Timber.d("Camera permission granted - initialize the camera source");
             // we have permission, so create the camerasource
             createCameraSource();
             return;
         }
 
-        Log.e(TAG, "Permission not granted: results len = " + grantResults.length +
+        Timber.e("Permission not granted: results len = " + grantResults.length +
                 " Result code = " + (grantResults.length > 0 ? grantResults[0] : "(empty)"));
 
         DialogInterface.OnClickListener listener = new DialogInterface.OnClickListener() {
@@ -205,11 +204,9 @@ public final class FaceTrackerActivity extends AppCompatActivity {
     private void startCameraSource() {
 
         // check that the device has play services available.
-        int code = GoogleApiAvailability.getInstance().isGooglePlayServicesAvailable(
-                getApplicationContext());
+        int code = GoogleApiAvailability.getInstance().isGooglePlayServicesAvailable(getApplicationContext());
         if (code != ConnectionResult.SUCCESS) {
-            Dialog dlg =
-                    GoogleApiAvailability.getInstance().getErrorDialog(this, code, RC_HANDLE_GMS);
+            Dialog dlg = GoogleApiAvailability.getInstance().getErrorDialog(this, code, RC_HANDLE_GMS);
             dlg.show();
         }
 
@@ -220,7 +217,7 @@ public final class FaceTrackerActivity extends AppCompatActivity {
                 Toast.makeText(this, "Camera permission required", Toast.LENGTH_LONG).show();
                 finish();
             } catch (Exception e) {
-                Log.e(TAG, "Unable to start camera source.", e);
+                Timber.e(e);
                 mCameraSource.release();
                 mCameraSource = null;
             }
@@ -260,6 +257,7 @@ public final class FaceTrackerActivity extends AppCompatActivity {
          */
         @Override
         public void onNewItem(int faceId, Face item) {
+            Timber.d("faceid=%s", faceId);
             mFaceGraphic.setId(faceId);
         }
 
@@ -268,6 +266,7 @@ public final class FaceTrackerActivity extends AppCompatActivity {
          */
         @Override
         public void onUpdate(FaceDetector.Detections<Face> detectionResults, Face face) {
+            Timber.d("onUpdate");
             mOverlay.add(mFaceGraphic);
             mFaceGraphic.updateFace(face);
         }
@@ -279,6 +278,7 @@ public final class FaceTrackerActivity extends AppCompatActivity {
          */
         @Override
         public void onMissing(FaceDetector.Detections<Face> detectionResults) {
+            Timber.d("onMissing");
             mOverlay.remove(mFaceGraphic);
         }
 
@@ -288,6 +288,7 @@ public final class FaceTrackerActivity extends AppCompatActivity {
          */
         @Override
         public void onDone() {
+            Timber.d("onDone");
             mOverlay.remove(mFaceGraphic);
         }
     }
