@@ -4,11 +4,13 @@ import android.graphics.Canvas;
 import android.graphics.Color;
 import android.graphics.Paint;
 import android.graphics.RectF;
-import android.util.Log;
+
+import timber.log.Timber;
 
 
 public abstract class FrameGraphic extends GraphicOverlay.Graphic implements Util.FrameSizeProvider {
-    private Paint borderPaint = null;
+
+    private Paint borderPaint;
     private int frameWidth = 0, frameHeight = 0;
 
     public FrameGraphic(GraphicOverlay overlay) {
@@ -41,12 +43,12 @@ public abstract class FrameGraphic extends GraphicOverlay.Graphic implements Uti
         float width = canvas.getWidth();
         float height = canvas.getHeight();
 
-        Log.d("FRAME-GRAPHIC", "canvas size w: " + width + ", h: " + height);
+        Timber.d("canvas size w: " + width + ", h: " + height);
         RectF rect = getFrameRect(width, height);
 
         frameWidth = Float.valueOf(rect.width()).intValue();
         frameHeight = Float.valueOf(rect.height()).intValue();
-        Log.d("FRAME-GRAPHIC", "frame width " + frameWidth);
+        Timber.d("frame width %s", frameWidth);
         canvas.drawRoundRect(rect, 8, 8, borderPaint);
     }
 

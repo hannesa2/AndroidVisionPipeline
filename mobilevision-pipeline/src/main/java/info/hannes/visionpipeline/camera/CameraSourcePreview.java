@@ -19,7 +19,6 @@ import android.Manifest;
 import android.content.Context;
 import android.content.res.Configuration;
 import android.util.AttributeSet;
-import android.util.Log;
 import android.view.SurfaceHolder;
 import android.view.SurfaceView;
 import android.view.ViewGroup;
@@ -30,6 +29,7 @@ import com.google.android.gms.common.images.Size;
 
 import info.hannes.visionpipeline.GraphicOverlay;
 import info.hannes.visionpipeline.Util;
+import timber.log.Timber;
 
 @SuppressWarnings("unused")
 public class CameraSourcePreview extends ViewGroup {
@@ -37,8 +37,6 @@ public class CameraSourcePreview extends ViewGroup {
         FIT_CENTER,
         FILL
     }
-
-    private static final String TAG = "CameraSourcePreview";
 
     private SurfaceView mSurfaceView;
     private boolean mStartRequested;
@@ -122,20 +120,20 @@ public class CameraSourcePreview extends ViewGroup {
         @Override
         public void surfaceCreated(SurfaceHolder surface) {
             mSurfaceAvailable = true;
-            Log.d(TAG, "Surface created");
+            Timber.d("Surface created");
             try {
                 startIfReady();
             } catch (SecurityException se) {
-                Log.e(TAG, "You do not have permission to start the camera", se);
+                Timber.e(se, "You do not have permission to start the camera");
             } catch (Exception e) {
-                Log.e(TAG, "Could not start camera source.", e);
+                Timber.e(e, "Could not start camera source");
             }
         }
 
         @Override
         public void surfaceDestroyed(SurfaceHolder surface) {
             mSurfaceAvailable = false;
-            Log.d(TAG, "Surface destroyed");
+            Timber.d("Surface destroyed");
         }
 
         @Override
@@ -146,7 +144,7 @@ public class CameraSourcePreview extends ViewGroup {
     @Override
     protected void onConfigurationChanged(Configuration newConfig) {
         super.onConfigurationChanged(newConfig);
-        Log.d(TAG, "Configuration changed");
+        Timber.d("Configuration changed");
         if (mCameraSource != null) {
             mCameraSource.updateRotation();
             updateOverlay();
@@ -176,9 +174,9 @@ public class CameraSourcePreview extends ViewGroup {
         try {
             startIfReady();
         } catch (SecurityException se) {
-            Log.e(TAG, "You do not have permission to start the camera", se);
+            Timber.e(se, "You do not have permission to start the camera");
         } catch (Exception e) {
-            Log.e(TAG, "Could not start camera source.", e);
+            Timber.e(e, "Could not start camera source.");
         }
     }
 
@@ -194,7 +192,7 @@ public class CameraSourcePreview extends ViewGroup {
                 height = size.getHeight();
             }
 
-            Log.d(TAG, "camera source not null");
+            Timber.d("camera source not null");
         }
 
         // Swap width and height sizes when in portrait, since it will be rotated 90 degrees
@@ -207,7 +205,7 @@ public class CameraSourcePreview extends ViewGroup {
 
         final float aspectRatio = (float) width / (float) height;
 
-        Log.d(TAG, "aspect ratio: " + aspectRatio);
+        Timber.d("aspect ratio: " + aspectRatio);
 
         int childWidth;
         int childHeight;
@@ -216,31 +214,31 @@ public class CameraSourcePreview extends ViewGroup {
             //fit height
             childHeight = layoutHeight;
             childWidth = Math.round(childHeight * aspectRatio);
-            Log.d(TAG, "fit height -> cw: " + childWidth + ", ch: " + childHeight);
+            Timber.d("fit height -> cw: " + childWidth + ", ch: " + childHeight);
 
             if (childWidth < layoutWidth) {
                 int diff = layoutWidth - childWidth;
                 childWidth = childWidth + diff;
                 childHeight = childHeight + Math.round(diff / aspectRatio);
 
-                Log.d(TAG, "fit height [nested block] -> cw: " + childWidth + ", ch: " + childHeight);
+                Timber.d("fit height [nested block] -> cw: " + childWidth + ", ch: " + childHeight);
             }
         } else {
             //fit width
             childWidth = layoutWidth;
             childHeight = Math.round(childWidth / aspectRatio);
-            Log.d(TAG, "fit width -> cw: " + childWidth + ", ch: " + childHeight);
+            Timber.d("fit width -> cw: " + childWidth + ", ch: " + childHeight);
 
             if (childHeight < layoutHeight) {
                 int diff = layoutHeight - childHeight;
                 childHeight = childHeight + diff;
                 childWidth = childWidth + Math.round(diff * aspectRatio);
 
-                Log.d(TAG, "fit width [nested block] -> cw: " + childWidth + ", ch: " + childHeight);
+                Timber.d("fit width [nested block] -> cw: " + childWidth + ", ch: " + childHeight);
             }
         }
 
-        Log.d(TAG, "layout size: w: " + layoutWidth + ", h: " + layoutHeight
+        Timber.d("layout size: w: " + layoutWidth + ", h: " + layoutHeight
                 + " - fit size: w: " + childWidth + ", h: " + childHeight);
 
         for (int i = 0; i < getChildCount(); ++i) {
@@ -308,7 +306,7 @@ public class CameraSourcePreview extends ViewGroup {
         childYOffset = (childHeight - layoutHeight) / 2;
         childXOffset = (childWidth - layoutWidth) / 2;
 
-        Log.d("PREVIEW", "layout w:" + layoutWidth + ", h:" + layoutHeight + "; child w:" + childWidth
+        Timber.d("layout w:" + layoutWidth + ", h:" + layoutHeight + "; child w:" + childWidth
                 + ", h:" + childHeight + ", x:" + childXOffset + ", y:" + childYOffset);
         for (int i = 0; i < getChildCount(); ++i) {
             // One dimension will be cropped.  We shift child over or up by this offset and adjust
@@ -358,7 +356,7 @@ public class CameraSourcePreview extends ViewGroup {
             childHeight = layoutHeight;
             childXOffset = (childWidth - layoutWidth) / 2;
         }
-        Log.d("PREVIEW", "layout w:" + layoutWidth + ", h:" + layoutHeight + "; child w:" + childWidth
+        Timber.d("layout w:" + layoutWidth + ", h:" + layoutHeight + "; child w:" + childWidth
                 + ", h:" + childHeight + ", x:" + childXOffset + ", y:" + childYOffset);
 
         for (int i = 0; i < getChildCount(); ++i) {
