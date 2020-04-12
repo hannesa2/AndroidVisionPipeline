@@ -1,4 +1,4 @@
-package online.devliving.mobilevisionpipeline;
+package info.hannes.visionpipeline;
 
 import android.annotation.TargetApi;
 import android.content.Context;

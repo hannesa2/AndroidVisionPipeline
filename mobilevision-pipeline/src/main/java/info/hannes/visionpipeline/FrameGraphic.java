@@ -1,4 +1,4 @@
-package online.devliving.mobilevisionpipeline;
+package info.hannes.visionpipeline;
 
 import android.graphics.Canvas;
 import android.graphics.Color;

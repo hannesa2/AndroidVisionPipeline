@@ -1,4 +1,4 @@
-package online.devliving.mobilevisionpipelinesample
+package info.hannes.visionpipelinesample
 
 import android.app.Application
 import info.hannes.timber.DebugTree

@@ -13,7 +13,7 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package online.devliving.mobilevisionpipeline;
+package info.hannes.visionpipeline;
 
 import android.content.Context;
 import android.graphics.Canvas;
@@ -23,7 +23,7 @@ import android.view.View;
 import java.util.HashSet;
 import java.util.Set;
 
-import online.devliving.mobilevisionpipeline.camera.CameraSource;
+import info.hannes.visionpipeline.camera.CameraSource;
 
 /**
  * A view which renders a series of custom graphics to be overlayed on top of an associated preview

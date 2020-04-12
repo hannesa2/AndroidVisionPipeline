@@ -1,4 +1,4 @@
-package online.devliving.mobilevisionpipelinesample;
+package info.hannes.visionpipelinesample;
 
 /*
  * Copyright (C) The Android Open Source Project
@@ -22,7 +22,7 @@ import android.graphics.Paint;
 
 import com.google.android.gms.vision.face.Face;
 
-import online.devliving.mobilevisionpipeline.GraphicOverlay;
+import info.hannes.visionpipeline.GraphicOverlay;
 
 /**
  * Graphic instance for rendering face position, orientation, and landmarks within an associated
