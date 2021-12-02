@@ -734,21 +734,21 @@ public class CameraSource {
     private Camera createCamera() throws Exception {
         mCameraId = getIdForRequestedCamera(mFacing);
         if (mCameraId == -1) {
-            throw new RuntimeException("Could not find requested camera.");
+            throw new Exception("Could not find requested camera.");
         }
         Camera camera = Camera.open(mCameraId);
 
         SizePair sizePair = (mRequestedPreviewHeight > 0 && mRequestedPreviewWidth > 0) ?
                 selectSizePair(camera, mRequestedPreviewWidth, mRequestedPreviewHeight) : selectSizePair(camera);
         if (sizePair == null) {
-            throw new RuntimeException("Could not find suitable preview size.");
+            throw new Exception("Could not find suitable preview size.");
         }
         Size pictureSize = sizePair.pictureSize();
         mPreviewSize = sizePair.previewSize();
 
         int[] previewFpsRange = selectPreviewFpsRange(camera, mRequestedFps);
         if (previewFpsRange == null) {
-            throw new RuntimeException("Could not find suitable preview frames per second range.");
+            throw new Exception("Could not find suitable preview frames per second range.");
         }
 
         Camera.Parameters parameters = camera.getParameters();
