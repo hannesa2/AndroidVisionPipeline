@@ -38,7 +38,7 @@ public class CameraSourcePreview extends ViewGroup {
         FILL
     }
 
-    private SurfaceView mSurfaceView;
+    private final SurfaceView mSurfaceView;
     private boolean mStartRequested;
     private boolean mSurfaceAvailable;
     private CameraSource mCameraSource;

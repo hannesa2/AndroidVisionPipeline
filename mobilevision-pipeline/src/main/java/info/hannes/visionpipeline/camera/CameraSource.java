@@ -146,11 +146,6 @@ public class CameraSource {
     private String mFocusMode = null;
     private String mFlashMode = null;
 
-    // These instances need to be held onto to avoid GC of their underlying resources.  Even though
-    // these aren't used outside of the method that creates them, they still must have hard
-    // references maintained to them.
-    private SurfaceTexture mDummySurfaceTexture;
-
     /**
      * Dedicated thread and associated runnable for calling into the detector with frames, as the
      * frames become available from the camera.
@@ -163,7 +158,7 @@ public class CameraSource {
      * buffer.  We use byte buffers internally because this is a more efficient way to call into
      * native code later (avoids a potential copy).
      */
-    private Map<byte[], ByteBuffer> mBytesToByteBuffer = new HashMap<>();
+    private final Map<byte[], ByteBuffer> mBytesToByteBuffer = new HashMap<>();
 
     //==============================================================================================
     // Builder
@@ -174,7 +169,7 @@ public class CameraSource {
      */
     public static class Builder {
         private final Detector<?> mDetector;
-        private CameraSource mCameraSource = new CameraSource();
+        private final CameraSource mCameraSource = new CameraSource();
 
         /**
          * Creates a camera source builder with the supplied context and detector.  Camera preview
@@ -348,7 +343,10 @@ public class CameraSource {
 
             // SurfaceTexture was introduced in Honeycomb (11), so if we are running and
             // old version of Android. fall back to use SurfaceView.
-            mDummySurfaceTexture = new SurfaceTexture(DUMMY_TEXTURE_NAME);
+            // These instances need to be held onto to avoid GC of their underlying resources.  Even though
+            // these aren't used outside of the method that creates them, they still must have hard
+            // references maintained to them.
+            SurfaceTexture mDummySurfaceTexture = new SurfaceTexture(DUMMY_TEXTURE_NAME);
             mCamera.setPreviewTexture(mDummySurfaceTexture);
             mCamera.startPreview();
 
@@ -420,12 +418,8 @@ public class CameraSource {
                     // developer wants to display a preview we must use a SurfaceHolder.  If the developer doesn't
                     // want to display a preview we use a SurfaceTexture if we are running at least Honeycomb.
 
-                    if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.HONEYCOMB) {
-                        mCamera.setPreviewTexture(null);
+                    mCamera.setPreviewTexture(null);
 
-                    } else {
-                        mCamera.setPreviewDisplay(null);
-                    }
                 } catch (Exception e) {
                     Timber.e(e, "Failed to clear camera preview");
                 }
@@ -740,21 +734,21 @@ public class CameraSource {
     private Camera createCamera() throws Exception {
         mCameraId = getIdForRequestedCamera(mFacing);
         if (mCameraId == -1) {
-            throw new RuntimeException("Could not find requested camera.");
+            throw new Exception("Could not find requested camera.");
         }
         Camera camera = Camera.open(mCameraId);
 
         SizePair sizePair = (mRequestedPreviewHeight > 0 && mRequestedPreviewWidth > 0) ?
                 selectSizePair(camera, mRequestedPreviewWidth, mRequestedPreviewHeight) : selectSizePair(camera);
         if (sizePair == null) {
-            throw new RuntimeException("Could not find suitable preview size.");
+            throw new Exception("Could not find suitable preview size.");
         }
         Size pictureSize = sizePair.pictureSize();
         mPreviewSize = sizePair.previewSize();
 
         int[] previewFpsRange = selectPreviewFpsRange(camera, mRequestedFps);
         if (previewFpsRange == null) {
-            throw new RuntimeException("Could not find suitable preview frames per second range.");
+            throw new Exception("Could not find suitable preview frames per second range.");
         }
 
         Camera.Parameters parameters = camera.getParameters();
@@ -900,7 +894,7 @@ public class CameraSource {
      * size is null, then there is no picture size with the same aspect ratio as the preview size.
      */
     private static class SizePair {
-        private Size mPreview;
+        private final Size mPreview;
         private Size mPicture;
 
         public SizePair(android.hardware.Camera.Size previewSize, android.hardware.Camera.Size pictureSize) {
@@ -1108,7 +1102,7 @@ public class CameraSource {
      */
     private class FrameProcessingRunnable implements Runnable {
         private Detector<?> mDetector;
-        private long mStartTimeMillis = SystemClock.elapsedRealtime();
+        private final long mStartTimeMillis = SystemClock.elapsedRealtime();
 
         // This lock guards all of the member variables below.
         private final Object mLock = new Object();
