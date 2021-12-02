@@ -10,7 +10,7 @@ import timber.log.Timber;
 
 public abstract class FrameGraphic extends GraphicOverlay.Graphic implements Util.FrameSizeProvider {
 
-    private Paint borderPaint;
+    private final Paint borderPaint;
     private int frameWidth = 0, frameHeight = 0;
 
     public FrameGraphic(GraphicOverlay overlay) {
