@@ -43,6 +43,7 @@ jobs:
         uses: softprops/action-gh-release@v1
         with:
           tag_name: ${{steps.tagger.outputs.tag}}
+          generate_release_notes: true
           name: ${{steps.tagger.outputs.tag}}
           body: ${{steps.github_release.outputs.changelog}}
           files: |
