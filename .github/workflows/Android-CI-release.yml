@@ -18,7 +18,7 @@ jobs:
         uses: actions/setup-java@v3
         with:
           distribution: 'adopt'
-          java-version: 11
+          java-version: 17
       - name: Build Changelog
         id: github_release
         uses: mikepenz/release-changelog-builder-action@main
@@ -34,7 +34,7 @@ jobs:
           abbrev: false
           commit-ish: HEAD
       - name: Install Android SDK
-        uses: malinskiy/action-android/install-sdk@release/0.1.2
+        uses: malinskiy/action-android/install-sdk@release/0.1.4
       - name: Build project
         run: ./gradlew assembleRelease
         env:
