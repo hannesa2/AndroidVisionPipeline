@@ -1,5 +1,5 @@
 jdk:
- - openjdk11
+ - openjdk17
 install:
  - ./gradlew :mobilevision-pipeline:build :mobilevision-pipeline:publishToMavenLocal -x :mobilevision-pipeline:test
  - find . -name "*.aar"
